@@ -70,25 +70,48 @@ class UndirectedGraph:
         """
         Remove edge from the graph
         """
-        
+        # if either vertex is not in the graph, do nothing
+        if v not in self.adj_list or u not in self.adj_list:
+            return
+        # remove edge from both lists
+        if v in self.adj_list[u]:
+            self.adj_list[u].remove(v)
+        if u in self.adj_list[v]:
+            self.adj_list[v].remove(u)
 
     def remove_vertex(self, v: str) -> None:
         """
         Remove vertex and all connected edges
         """
-        
+        # if the vertex is not in the graph, do nothing
+        if v not in self.adj_list:
+            return
+        # remove the vertex itself as well as its edges from all adjacent vertices
+        while self.adj_list[v]:
+            u = self.adj_list[v].pop()
+            if v in self.adj_list[u]:
+                self.adj_list[u].remove(v)
+        self.adj_list.pop(v)
+
 
     def get_vertices(self) -> []:
         """
         Return list of vertices in the graph (any order)
         """
-       
+        keys = list(self.adj_list.keys())
+        return keys
 
     def get_edges(self) -> []:
         """
         Return list of edges in the graph (any order)
         """
-        
+        edges = []
+        for u in self.adj_list:
+            for v in self.adj_list[u]:
+                if (u, v) not in edges and (v, u) not in edges:
+                    edges.append((u, v))
+        return edges
+
 
     def is_valid_path(self, path: []) -> bool:
         """
@@ -127,23 +150,23 @@ class UndirectedGraph:
 
 if __name__ == '__main__':
 
-    print("\nPDF - method add_vertex() / add_edge example 1")
-    print("----------------------------------------------")
-    g = UndirectedGraph()
-    print(g)
-
-    for v in 'ABCDE':
-        g.add_vertex(v)
-    print(g)
-
-    g.add_vertex('A')
-    print(g)
-
-    for u, v in ['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE', ('B', 'C')]:
-        g.add_edge(u, v)
-    print(g)
-
-
+    # print("\nPDF - method add_vertex() / add_edge example 1")
+    # print("----------------------------------------------")
+    # g = UndirectedGraph()
+    # print(g)
+    #
+    # for v in 'ABCDE':
+    #     g.add_vertex(v)
+    # print(g)
+    #
+    # g.add_vertex('A')
+    # print(g)
+    #
+    # for u, v in ['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE', ('B', 'C')]:
+    #     g.add_edge(u, v)
+    # print(g)
+    #
+    #
     # print("\nPDF - method remove_edge() / remove_vertex example 1")
     # print("----------------------------------------------------")
     # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
@@ -153,15 +176,15 @@ if __name__ == '__main__':
     # print(g)
     # g.remove_vertex('D')
     # print(g)
-    #
-    #
-    # print("\nPDF - method get_vertices() / get_edges() example 1")
-    # print("---------------------------------------------------")
-    # g = UndirectedGraph()
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
-    # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
-    #
+
+
+    print("\nPDF - method get_vertices() / get_edges() example 1")
+    print("---------------------------------------------------")
+    g = UndirectedGraph()
+    print(g.get_edges(), g.get_vertices(), sep='\n')
+    g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
+    print(g.get_edges(), g.get_vertices(), sep='\n')
+
     #
     # print("\nPDF - method is_valid_path() example 1")
     # print("--------------------------------------")
