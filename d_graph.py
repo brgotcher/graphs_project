@@ -52,10 +52,12 @@ class DirectedGraph:
 
     def add_vertex(self) -> int:
         """
-        TODO: Write this implementation
+        add a new vertex to the adjacency matrix
         """
+        # add a new item to the end of each existing list for the new vertex
         for i in range(self.v_count):
             self.adj_matrix[i].append(0)
+        # increment the vertex count and add a new list of 0's for the new vertex
         self.v_count += 1
         self.adj_matrix.append([0] * self.v_count)
 
@@ -63,27 +65,41 @@ class DirectedGraph:
 
     def add_edge(self, src: int, dst: int, weight=1) -> None:
         """
-        TODO: Write this implementation
+        add a new edge to the specified vertex
         """
         self.adj_matrix[src][dst] = weight
 
     def remove_edge(self, src: int, dst: int) -> None:
         """
-        TODO: Write this implementation
+        reset the specified edge to 0
         """
-        pass
+        self.adj_matrix[src][dst] = 0
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        return a list of vertices- since the vertices are only represented by
+        index, this list is basically just a count
         """
-        pass
+        vertices = []
+        for i in range(self.v_count):
+            vertices.append(i)
+        return vertices
 
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+        return a list of all edges as tuples: (source, destination, weight)
         """
-        pass
+        edges = []
+        # iterate through outer list of source vertices
+        for i in range(self.v_count):
+            # iterate inner list of destination vertices
+            for j in range(self.v_count):
+                # if the value is anything other than 0, this is an edge and
+                # should be appended to the edges list
+                weight = self.adj_matrix[i][j]
+                if weight:
+                    edges.append((i, j, weight))
+        return edges
 
     def is_valid_path(self, path: []) -> bool:
         """
@@ -118,30 +134,30 @@ class DirectedGraph:
 
 if __name__ == '__main__':
 
-    print("\nPDF - method add_vertex() / add_edge example 1")
-    print("----------------------------------------------")
-    g = DirectedGraph()
-    print(g)
-    for _ in range(5):
-        g.add_vertex()
-    print(g)
-
-    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    for src, dst, weight in edges:
-        g.add_edge(src, dst, weight)
-    print(g)
-
-
-    # print("\nPDF - method get_edges() example 1")
-    # print("----------------------------------")
+    # print("\nPDF - method add_vertex() / add_edge example 1")
+    # print("----------------------------------------------")
     # g = DirectedGraph()
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
+    # print(g)
+    # for _ in range(5):
+    #     g.add_vertex()
+    # print(g)
+    #
     # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
     #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    # g = DirectedGraph(edges)
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
-    #
+    # for src, dst, weight in edges:
+    #     g.add_edge(src, dst, weight)
+    # print(g)
+
+
+    print("\nPDF - method get_edges() example 1")
+    print("----------------------------------")
+    g = DirectedGraph()
+    print(g.get_edges(), g.get_vertices(), sep='\n')
+    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    g = DirectedGraph(edges)
+    print(g.get_edges(), g.get_vertices(), sep='\n')
+
     #
     # print("\nPDF - method is_valid_path() example 1")
     # print("--------------------------------------")
