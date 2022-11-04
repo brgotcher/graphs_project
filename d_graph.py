@@ -103,9 +103,16 @@ class DirectedGraph:
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        accepts a list of vertex indices and returns true if the list
+        represents a valid path along existing edges
         """
-        pass
+        # iterate through the path list
+        for i in range(len(path)-1):
+            # if weight between the current and next vertices in the path
+            #
+            if not self.adj_matrix[path[i]][path[i+1]]:
+                return False
+        return True
 
     def dfs(self, v_start, v_end=None) -> []:
         """
@@ -149,25 +156,25 @@ if __name__ == '__main__':
     # print(g)
 
 
-    print("\nPDF - method get_edges() example 1")
-    print("----------------------------------")
-    g = DirectedGraph()
-    print(g.get_edges(), g.get_vertices(), sep='\n')
-    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    g = DirectedGraph(edges)
-    print(g.get_edges(), g.get_vertices(), sep='\n')
-
-    #
-    # print("\nPDF - method is_valid_path() example 1")
-    # print("--------------------------------------")
+    # print("\nPDF - method get_edges() example 1")
+    # print("----------------------------------")
+    # g = DirectedGraph()
+    # print(g.get_edges(), g.get_vertices(), sep='\n')
     # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
     #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     # g = DirectedGraph(edges)
-    # test_cases = [[0, 1, 4, 3], [1, 3, 2, 1], [0, 4], [4, 0], [], [2]]
-    # for path in test_cases:
-    #     print(path, g.is_valid_path(path))
-    #
+    # print(g.get_edges(), g.get_vertices(), sep='\n')
+
+
+    print("\nPDF - method is_valid_path() example 1")
+    print("--------------------------------------")
+    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    g = DirectedGraph(edges)
+    test_cases = [[0, 1, 4, 3], [1, 3, 2, 1], [0, 4], [4, 0], [], [2]]
+    for path in test_cases:
+        print(path, g.is_valid_path(path))
+
     #
     # print("\nPDF - method dfs() and bfs() example 1")
     # print("--------------------------------------")
