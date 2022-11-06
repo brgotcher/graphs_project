@@ -176,23 +176,32 @@ class DirectedGraph:
         """
         TODO: fix this
         """
-        visited = []
+        visited = [0] * self.v_count
+        active = [0] * self.v_count
         for i in range(self.v_count):
-            if i not in visited:
-                if self.rec_has_cycle(i, visited, -1):
-                    return True
+            if self.cycle_helper(i, visited, active):
+                return True
         return False
 
-    def rec_has_cycle(self, i, visited, parent):
-        visited.append(i)
+    def cycle_helper(self, i, visited, active):
+        if (active[i]):
+            return True
+
+        if visited[i]:
+            return False
+
+        visited[i] = 1
+        active[i] = 1
+
+        neighbors = self.adj_matrix[i]
+
         for j in range(self.v_count):
-            if self.adj_matrix[i][j]:
-                if j not in visited:
-                    if self.rec_has_cycle(j, visited, i):
-                        return True
-                elif parent != j and parent != -1:
-                    return True
+            if neighbors[j] and self.cycle_helper(j, visited, active):
+                return True
+
+        active[i] = 0
         return False
+
 
     def dijkstra(self, src: int) -> []:
         """
@@ -264,9 +273,6 @@ if __name__ == '__main__':
         print(g.get_edges(), g.has_cycle(), sep='\n')
     print('\n', g)
 
-    # edges = [(0, 1, 10), (1, 4, 15), (2, 1, 23), (4, 3, 3)]
-    # g = DirectedGraph(edges)
-    # print(g.has_cycle())
 
     #
     # print("\nPDF - dijkstra() example 1")
