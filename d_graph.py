@@ -3,6 +3,9 @@
 # Assignment:
 # Description:
 
+import heapq
+from collections import deque
+
 class DirectedGraph:
     """
     Class to implement directed weighted graph
@@ -205,9 +208,34 @@ class DirectedGraph:
 
     def dijkstra(self, src: int) -> []:
         """
-        TODO: Write this implementation
+        finds the shortest path from the source vertex to all other vertices
         """
-        pass
+        # use a priority queue
+        pq = []
+        visited = [float('inf')] * self.v_count
+
+        # push the source vertex to the priority queue with a distance of 0
+        heapq.heappush(pq, [0, src])
+
+        # keep popping as long as the pq is not empty
+        while len(pq) > 0:
+            temp = heapq.heappop(pq)
+            d = temp[0]
+            v = temp[1]
+
+            # if the vertex hasn't been visited:
+            if visited[v] == float('inf'):
+                visited[v] = d
+
+                # iterate all neighbor vertices
+                for i in range(self.v_count):
+                    dist = self.adj_matrix[v][i]
+                    if dist:
+                        heapq.heappush(pq, [d + dist, i])
+        return visited
+
+
+
 
 
 if __name__ == '__main__':
@@ -256,33 +284,35 @@ if __name__ == '__main__':
     #     print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
 
 
-    print("\nPDF - method has_cycle() example 1")
-    print("----------------------------------")
+    # print("\nPDF - method has_cycle() example 1")
+    # print("----------------------------------")
+    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    # g = DirectedGraph(edges)
+    #
+    # edges_to_remove = [(3, 1), (4, 0), (3, 2)]
+    # for src, dst in edges_to_remove:
+    #     g.remove_edge(src, dst)
+    #     print(g.get_edges(), g.has_cycle(), sep='\n')
+    #
+    # edges_to_add = [(4, 3), (2, 3), (1, 3), (4, 0)]
+    # for src, dst in edges_to_add:
+    #     g.add_edge(src, dst)
+    #     print(g.get_edges(), g.has_cycle(), sep='\n')
+    # print('\n', g)
+
+
+
+    print("\nPDF - dijkstra() example 1")
+    print("--------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
 
-    edges_to_remove = [(3, 1), (4, 0), (3, 2)]
-    for src, dst in edges_to_remove:
-        g.remove_edge(src, dst)
-        print(g.get_edges(), g.has_cycle(), sep='\n')
-
-    edges_to_add = [(4, 3), (2, 3), (1, 3), (4, 0)]
-    for src, dst in edges_to_add:
-        g.add_edge(src, dst)
-        print(g.get_edges(), g.has_cycle(), sep='\n')
+    for i in range(5):
+        print(f'DIJKSTRA {i} {g.dijkstra(i)}')
+    g.remove_edge(4, 3)
     print('\n', g)
+    for i in range(5):
+        print(f'DIJKSTRA {i} {g.dijkstra(i)}')
 
-
-    #
-    # print("\nPDF - dijkstra() example 1")
-    # print("--------------------------")
-    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    # g = DirectedGraph(edges)
-    # for i in range(5):
-    #     print(f'DIJKSTRA {i} {g.dijkstra(i)}')
-    # g.remove_edge(4, 3)
-    # print('\n', g)
-    # for i in range(5):
-    #     print(f'DIJKSTRA {i} {g.dijkstra(i)}')
